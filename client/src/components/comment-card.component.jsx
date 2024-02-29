@@ -179,7 +179,7 @@ const CommentCard = ({ index, leftVal, commentData }) => {
                         </button> 
                         :
                         <button className="text-dark-grey p-2 px-3 hover-bg-grey/30 rounded-md flex items-center" onClick={loadReplies}>
-                            <i className="fi fi-rs-comment-dots"></i> {children.length} Reply
+                            <i className="fi fi-rs-comment-dots mr-2"></i> {children.length} Reply
                         </button>
                     }
 
