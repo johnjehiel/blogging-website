@@ -1,0 +1,14 @@
+
+BUGS:
+- tag buttons dont get highlighted when clicked for small tags
+
+ERRORS:
+- google auth isnt working
+- banner image cannot take higher payload
+
+
+
+
+FIXED BUGS AND REASONS:
+1. going back to editor after clicking the x button in publish, the text editor doesnt show up i.e., its width is somehow set to 0
+    reason: we didnt set the textEditor.isReady state back to false. so we set it to false when we save the text before publishing (blog-editor.component line:126)
