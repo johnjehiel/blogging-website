@@ -200,7 +200,7 @@ const BlogEditor = () => {
                 <img src={ theme == "light" ? darkLogo : lightLogo } className = "w-full" alt="logo" />
             </Link>
             <p className="max-md:hidden text-black line-clamp-1 w-full">
-                { title.length ? title : "New Blog" }
+                { title && title.length ? title : "New Blog" }
             </p>
 
             <div className="flex gap-4 ml-auto">
@@ -226,7 +226,7 @@ const BlogEditor = () => {
                         </label>
                     </div>
 
-                    <textarea   defaultValue={title}
+                    <textarea   defaultValue={title ? title : ""}
                                 className="text-4xl font-medium w-full h-20 outline-none resize-none mt-10 leading-tight placeholder:opacity-40 bg-white" 
                                 onKeyDown={handleTitleKeyDown}
                                 onChange={handleTitleChange}
