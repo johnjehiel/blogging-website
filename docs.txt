@@ -12,3 +12,26 @@ ERRORS:
 FIXED BUGS AND REASONS:
 1. going back to editor after clicking the x button in publish, the text editor doesnt show up i.e., its width is somehow set to 0
     reason: we didnt set the textEditor.isReady state back to false. so we set it to false when we save the text before publishing (blog-editor.component line:126)
+
+
+
+Additional Features to implement:
+- following and followers along with for you page and following page
+- messaging - individual and groups (sending texts, images, videos, voice messages)
+- blog communities (minor feature)
+- ML implementation
+    - tagging prediction from images or blog texts / tagging based on object detection / content moderation
+    - recommendation systems (for you page)
+
+// to check for correct uploads
+server.post("/uploadBanner", async (req, res) => {
+    const { base64 } = req.body;
+    /*
+    try {
+        Images.create({blogSchema.banner: base64});
+        return res.status(200);
+    } catch (error) {
+        return res.status(403).json({"error": "Banner Upload Error"})
+    }
+    */
+})

@@ -39,17 +39,6 @@ mongoose.connect(process.env.DB_LOCATION, {
     autoIndex: true
 });
 
-server.post("/uploadBanner", async (req, res) => {
-    const { base64 } = req.body;
-    /*
-    try {
-        Images.create({blogSchema.banner: base64});
-        return res.status(200);
-    } catch (error) {
-        return res.status(403).json({"error": "Banner Upload Error"})
-    }
-    */
-})
 
 const verifyJWT = (req, res, next) => {
     const authHeader = req.headers["authorization"];
@@ -62,7 +51,7 @@ const verifyJWT = (req, res, next) => {
             return res.status(403).json({ "error": "Access Token is Invalid"});
         }
         req.user = user.id;
-        next(); // continue the aprent callback
+        next(); // continue the parent callback
     });
 }
 
@@ -204,7 +193,7 @@ server.post("/change-password", verifyJWT, (req, res) => {
         return res.status(403).json({ error: "Password should be 6 to 20 characters with a numeric, 1 lowercase and 1 uppercase letters"})
     }
 
-    User.findOne({ _id: req.user })
+    User.findOne({ _id: req.user }) // req.user has the decoded _id from the verifyJWT
     .then((user) => {
         if (user.google_auth) {
             return res.status(403).json({error: "you logged in through google"})
