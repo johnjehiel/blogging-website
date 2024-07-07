@@ -1,6 +1,7 @@
 
 BUGS:
 - tag buttons dont get highlighted when clicked for small tags
+- reference error in line 61 at comment-card.component for "id" and after deletion the ui is bugged/glitchy 
 
 ERRORS:
 - google auth isnt working
