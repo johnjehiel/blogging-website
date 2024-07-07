@@ -10,14 +10,21 @@ import admin from "firebase-admin";
 import serviceAccountKey from "./blogging-website-using-mern-firebase-adminsdk-ugmk0-8d6639e6be.json" assert { type: "json" };
 import { getAuth } from "firebase-admin/auth";
 
-
+import authRoutes from './routes/authRoutes.js';
+// import blogRoutes from './routes/blogRoutes.js';
+// import commentRoutes from './routes/commentRoutes.js';
+// import notificationRoutes from './routes/notificationRoutes.js';
+// import userRoutes from './routes/userRoutes.js';
 
 // schema
 
-import User from "./Schema/User.js"; // import User collections from mongodbaltas
-import Blog from "./Schema/Blog.js"; // import Blog collections from mongodbaltas
-import Notification from "./Schema/Notification.js";
-import Comment from "./Schema/Comment.js";
+import User from "./models/User.js"; // import User collections from mongodbaltas
+import Blog from "./models/Blog.js"; // import Blog collections from mongodbaltas
+import Notification from "./models/Notification.js";
+import Comment from "./models/Comment.js";
+import { verifyJWT } from "./middlewares/verifyJWT.js";
+import { formatDataToSend } from "./utils/formatDataToSend.js";
+import { generateUsername } from "./utils/generateUsername.js";
 
 const server = express();
 let PORT = 3000;
@@ -31,13 +38,21 @@ admin.initializeApp({ // firstly generate new prviate key from firebase project 
     credential: admin.credential.cert(serviceAccountKey)
 });
 
-let emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/; // regex for email
-let passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$/; // regex for password
+// let emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/; // regex for email
+// let passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$/; // regex for password
 
 
 mongoose.connect(process.env.DB_LOCATION, {
     autoIndex: true
 });
+
+
+server.use('/', authRoutes);
+// server.use('/blogs', blogRoutes);
+// server.use('/comments', commentRoutes);
+// server.use('/notifications', notificationRoutes);
+// server.use('/users', userRoutes);
+
 
 server.post("/uploadBanner", async (req, res) => {
     const { base64 } = req.body;
@@ -51,39 +66,39 @@ server.post("/uploadBanner", async (req, res) => {
     */
 })
 
-const verifyJWT = (req, res, next) => {
-    const authHeader = req.headers["authorization"];
-    const token = authHeader && authHeader.split(" ")[1]; // ["bearer", "token"]
-    if (token == null) {
-        return res.status(401).json({ "error": "No access Token"});
-    }
-    jwt.verify(token, process.env.SECRET_ACCESS_KEY, (err, user) => {
-        if (err) {
-            return res.status(403).json({ "error": "Access Token is Invalid"});
-        }
-        req.user = user.id;
-        next(); // continue the aprent callback
-    });
-}
+// const verifyJWT = (req, res, next) => {
+//     const authHeader = req.headers["authorization"];
+//     const token = authHeader && authHeader.split(" ")[1]; // ["bearer", "token"]
+//     if (token == null) {
+//         return res.status(401).json({ "error": "No access Token"});
+//     }
+//     jwt.verify(token, process.env.SECRET_ACCESS_KEY, (err, user) => {
+//         if (err) {
+//             return res.status(403).json({ "error": "Access Token is Invalid"});
+//         }
+//         req.user = user.id;
+//         next(); // continue the aprent callback
+//     });
+// }
 
-const formatDataToSend = (user) => { // to send to mongodb
-    const access_token = jwt.sign({ id: user._id }, process.env.SECRET_ACCESS_KEY)
+// const formatDataToSend = (user) => { // to send to mongodb
+//     const access_token = jwt.sign({ id: user._id }, process.env.SECRET_ACCESS_KEY)
 
-    return {
-        access_token,
-        profile_img: user.personal_info.profile_img,
-        username: user.personal_info.username,
-        fullname: user.personal_info.fullname,
-    }
-}
+//     return {
+//         access_token,
+//         profile_img: user.personal_info.profile_img,
+//         username: user.personal_info.username,
+//         fullname: user.personal_info.fullname,
+//     }
+// }
 
-const generateUsername = async (email) => {
-    let username = email.split("@")[0];
-    let isUsernameNotUnique = await User.exists({"personal_info.username": username}).then((result) => result)
-    isUsernameNotUnique ? username += nanoid().substring(0, 5) : "";
-    return username;
-}
-
+// const generateUsername = async (email) => {
+//     let username = email.split("@")[0];
+//     let isUsernameNotUnique = await User.exists({"personal_info.username": username}).then((result) => result)
+//     isUsernameNotUnique ? username += nanoid().substring(0, 5) : "";
+//     return username;
+// }
+/*
 server.post("/signup", (req, res) => {
     let {fullname, email, password} = req.body;
     // validating data from front end
@@ -306,7 +321,7 @@ server.post("/update-profile", verifyJWT , (req,res) => {
 
 
 })
-
+*/
 server.post("/latest-blogs", (req, res) => {
     
     let { page } = req.body;
