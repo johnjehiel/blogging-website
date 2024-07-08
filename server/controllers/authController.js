@@ -76,7 +76,7 @@ export const googleAuth = async (req, res) => {
     if (!access_token) {
         return res.status(500).json({ "error": "Failed to authenticate with google. access_token is null" });
     }
-    // console.log("server" + access_token);
+    
     getAuth()
     .verifyIdToken(access_token)
     .then(async (decodedUser) => {
@@ -84,8 +84,8 @@ export const googleAuth = async (req, res) => {
 
         picture = picture.replace("s96-c", "s384-c"); // convert google image to high resolution
 
-        let user = await user.findOne({ "personal_info.email": email })
-                                .select("personal_info.fullname personal_info.username personal_info.profile_img personal_info.google_auth")
+        let user = await User.findOne({ "personal_info.email": email })
+                                .select("personal_info.fullname personal_info.username personal_info.profile_img google_auth")
                                 .then((u) => {
                                     return u || null;
                                 })
@@ -113,6 +113,7 @@ export const googleAuth = async (req, res) => {
         return res.status(200).json(formatDataToSend(user));
     })
     .catch(err => {
+        console.log(err);
         return res.status(500).json({ "error": "Failed to authenticate with google. Try with some other google account" });
     })
 }

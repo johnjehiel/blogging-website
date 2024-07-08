@@ -14,8 +14,12 @@ import axios from "axios";
 
 const BlogEditor = () => {
 
-    let { blog, blog: { title, banner, content, tags, des }, setBlog, textEditor, setTextEditor, setEditorState } = useContext(EditorContext);
-    //console.log(EditorContext); // gave some unexpected error, title is undefined
+    // let { blog, blog: { title, banner, content, tags, des }, setBlog, textEditor, setTextEditor, setEditorState } = useContext(EditorContext);
+    // gave some unexpected error, title is undefined
+    let { blog, setBlog, textEditor, setTextEditor, setEditorState } = useContext(EditorContext); 
+
+    let { title = "", banner = "", content = [], tags = [], des = "" } = blog || {}; // safetly destructure to avoid error
+
     let { userAuth: { access_token } } = useContext(UserContext);
 
     let { theme } = useContext(ThemeContext);
