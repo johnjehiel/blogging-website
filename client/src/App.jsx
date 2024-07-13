@@ -2,7 +2,7 @@ import { Routes, Route } from "react-router-dom";
 import Navbar from "./components/navbar.component";
 import UserAuthForm from "./pages/userAuthForm.page";
 import { createContext, useEffect, useState } from "react";
-import { lookInSession } from "./common/session";
+import { lookInLocalStorage } from "./common/session";
 import Editor from "./pages/editor.pages";
 import HomePage from "./pages/home.page";
 import SearchPage from "./pages/search.page";
@@ -30,8 +30,8 @@ const App = () => {
     const [ theme, setTheme ] = useState(() => darkThemePreference() ? "dark" : "light");
 
     useEffect(() => {
-        let userInSession = lookInSession("user");
-        let themeInSession = lookInSession("theme");
+        let userInSession = lookInLocalStorage("user");
+        let themeInSession = lookInLocalStorage("theme");
 
         userInSession ? setUserAuth(JSON.parse(userInSession)) : setUserAuth({ access_token: null })
     

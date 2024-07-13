@@ -5,7 +5,7 @@ import AnimationWrapper from "../common/page-animation";
 import { useContext, useRef } from "react";
 import { Toaster, toast } from "react-hot-toast";
 import axios from "axios";
-import { storeInSession } from "../common/session";
+import { storeInLocalStorage } from "../common/session";
 import { UserContext } from "../App";
 import { authWithGoogle } from "../common/firebase";
 
@@ -19,7 +19,7 @@ const UserAuthForm = ({ type }) => {
         // any variable name in vite env should ALWAYS start with VITE 
         axios.post(import.meta.env.VITE_SERVER_DOMAIN + serverRoute, formData)
         .then(({ data }) => {
-            storeInSession("user", JSON.stringify(data));
+            storeInLocalStorage("user", JSON.stringify(data));
             setUserAuth(data)
         })
         .catch(({ response }) => {

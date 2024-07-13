@@ -2,13 +2,13 @@ import React, { useContext } from 'react'
 import AnimationWrapper from '../common/page-animation';
 import { Link } from 'react-router-dom';
 import { UserContext } from '../App';
-import { removeFromSession } from '../common/session';
+import { removeFromLocalStorage } from '../common/session';
 const UserNavigationPanel = () => {
 
     const { userAuth: { username }, setUserAuth } = useContext(UserContext);
 
     const signOutUser = () => {
-        removeFromSession("user");
+        removeFromLocalStorage("user");
         setUserAuth({ access_token: null }); // resetting back to default value of null
     }
 

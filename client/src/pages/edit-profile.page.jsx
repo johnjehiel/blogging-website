@@ -6,7 +6,7 @@ import AnimationWrapper from "../common/page-animation";
 import Loader from "../components/loader.component";
 import { Toaster, toast } from "react-hot-toast";
 import InputBox from "../components/input.component";
-import { storeInSession } from "../common/session";
+import { storeInLocalStorage } from "../common/session";
 
 const EditProfile = () => {
 
@@ -108,7 +108,7 @@ const EditProfile = () => {
             .then(({ data }) => {
                 let newUserAuth = { ...userAuth, profile_img: data.profile_img }
 
-                storeInSession("user", JSON.stringify(newUserAuth));
+                storeInLocalStorage("user", JSON.stringify(newUserAuth));
                 setUserAuth(newUserAuth);
 
                 setUpdatedProfileImage(null);
@@ -162,7 +162,7 @@ const EditProfile = () => {
 
                 let newUserAuth = { ...userAuth, username: data.username };
 
-                storeInSession("user", JSON.stringify(newUserAuth));
+                storeInLocalStorage("user", JSON.stringify(newUserAuth));
                 setUserAuth(newUserAuth);
 
             }

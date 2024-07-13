@@ -5,7 +5,7 @@ import { useContext, useEffect, useState } from "react"
 import { ThemeContext, UserContext } from "../App";
 import UserNavigationPanel from "./user-navigation.component";
 import axios from "axios";
-import { storeInSession } from "../common/session";
+import { storeInLocalStorage } from "../common/session";
 const Navbar = () => {
     const [searchBoxVisibility, setsearchBoxVisibility] = useState(false);
     const [userNavPanel, setuserNavPanel] = useState(false);
@@ -60,7 +60,7 @@ const Navbar = () => {
 
         document.body.setAttribute("data-theme", newTheme);
 
-        storeInSession("theme", newTheme);
+        storeInLocalStorage("theme", newTheme);
     }
 
     return (
